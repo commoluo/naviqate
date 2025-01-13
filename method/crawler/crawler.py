@@ -52,6 +52,9 @@ class WebCrawler():
         chrome_options.add_argument(f"window-size={WINDOW_WIDTH},{WINDOW_HEIGHT}")
         chrome_options.add_experimental_option("prefs", {"profile.default_content_settings.cookies": 0})
         # chrome_options.add_argument('--headless')
+
+        desired_caps = DesiredCapabilities.CHROME.copy()
+        desired_caps["goog:loggingPrefs"] = {"browser": "ALL"}
         
         self.driver = uc.Chrome(option=chrome_options, headless=headless)
         # service = Service(executable_path=ChromeDriverManager().install())
@@ -393,8 +396,6 @@ class WebCrawler():
                     self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
                     element.click()
             except Exception as e:
-                print(e)
-                print(xpath)
                 self.driver.implicitly_wait(WAIT_TIMEOUT)
                 return 1
 
@@ -754,7 +755,6 @@ class WebCrawler():
         self.driver.quit()
 
     def loop(self, MAX_STEPS=15):
-        
 
         for i in range(MAX_STEPS):
             print('step index:' + str(i))

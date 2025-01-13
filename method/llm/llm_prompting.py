@@ -124,7 +124,6 @@ class CustomChatModel(LLM):
                 "stop": stop
             }
             response = requests.post(self.api_url, headers=headers, json=payload)
-            print(response.json())
             if response.status_code != 200:
                 raise ValueError(f"请求失败: {response.status_code}, {response.text}")
 
@@ -154,28 +153,6 @@ class CustomChatModel(LLM):
         """
         return "custom_chat_model"
 # load_dotenv()
-
-# class CustomChatOpenAI(ChatOpenAI):
-#     """
-#     扩展 ChatOpenAI 类，增加 base_url 支持，用于连接自定义 OpenAI GPT 服务。
-#     """
-#     base_url: str = Field(default=None, description="自定义的模型服务 URL 地址")
-#     def __init__(self, **kwargs):
-#         """
-#         初始化方法，支持自定义 base_url 和其他参数。
-#         """
-#         super().__init__(**kwargs)
-
-#     def _default_openai_endpoint(self):
-#         """
-#         重写默认的 OpenAI 端点方法，使用自定义 base_url。
-#         如果未提供 base_url，则回退到默认的 OpenAI URL。
-#         """
-#         return self.base_url or super()._default_openai_endpoint()
-
-
-# 使用自定义类初始化
-
 
 def init_model(model='gpt'):
     # if model == 'gpt_mini':

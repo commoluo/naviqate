@@ -8,7 +8,7 @@ function getDirectories(source: string): string[] {
     .map(dirent => path.join(source, dirent.name));
 }
 
-const outFolderPath = '../out';
+const outFolderPath = '../evaluation/out/concrete';
 const websiteDirectories = getDirectories(outFolderPath);
 
 for (const websiteDirectory of websiteDirectories) {
@@ -16,7 +16,7 @@ for (const websiteDirectory of websiteDirectories) {
   const taskDirectories = getDirectories(websiteDirectory);
 
   for (const taskDirectory of taskDirectories) {
-    test(`Dynamic actions for ${website} - ${path.basename(taskDirectory)}`, async ({ page , context }) => {
+    test(`Dynamic actions for ${website} - ${path.basename(taskDirectory)}`, async ({ page, context }) => {
       page.setViewportSize({ width: 1920, height: 1080 });
       const historyFilePath = path.join(taskDirectory, 'history.json');
       if (!fs.existsSync(historyFilePath)) {
@@ -26,7 +26,6 @@ for (const websiteDirectory of websiteDirectories) {
       const actions = JSON.parse(fs.readFileSync(historyFilePath, 'utf-8'));
 
       await page.goto(`https://${website}`, { waitUntil: 'load' });
-      
 
       await context.tracing.start({ screenshots: true, snapshots: true });
 

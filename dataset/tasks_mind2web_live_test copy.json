@@ -1,6 +1,83 @@
 [
     {
         "website": "apple",
+        "task": "Add Pro Display XDR with nano texture to bag with all the accessories",
+        "category": "Shopping.Digital",
+        "index": "rUyFGVLAMz748JXIqLlqE",
+        "evaluation": [
+            {
+                "match_function_name": "url_included_match",
+                "content": {
+                    "key": "",
+                    "reference_answer": "apple.",
+                    "url": "https://www.apple.com/"
+                }
+            },
+            {
+                "match_function_name": "url_included_match",
+                "content": {
+                    "key": "",
+                    "reference_answer": "/pro-display-xdr/",
+                    "url": "https://www.apple.com/pro-display-xdr/"
+                }
+            },
+            {
+                "match_function_name": "url_included_match",
+                "content": {
+                    "key": "",
+                    "reference_answer": "/shop/buy-mac/",
+                    "url": "https://www.apple.com/shop/buy-mac/pro-display-xdr"
+                }
+            },
+            {
+                "match_function_name": "element_path_exactly_match",
+                "method": "selector",
+                "content": {
+                    "reference_answer": ".rc-dimension.rf-flagship-productselection-dimension.rf-flagship-productselection-dimensionfinish >div:nth-child(3)>div:nth-child(2)>label:nth-child(2)>.row.row-logical >span:nth-child(1)>span:nth-child(1)",
+                    "netloc": "apple",
+                    "url": "https://www.apple.com/shop/buy-mac/pro-display-xdr"
+                }
+            },
+            {
+                "match_function_name": "url_included_match",
+                "content": {
+                    "key": "",
+                    "reference_answer": "/nano-glass",
+                    "url": "https://www.apple.com/shop/buy-mac/pro-display-xdr"
+                }
+            },
+            {
+                "match_function_name": "element_path_exactly_match",
+                "method": "selector",
+                "content": {
+                    "reference_answer": ".rf-accessories-wrapper >div:nth-child(1)>.rf-simpleaccessorytileviewslot.rf-simpleaccessorytileviewslot-enabled.row.as-l-container >.rf-simpleaccessorytileviewslot-section.column.large-6.large-offset-1.small-12.small-offset-0 >fieldset:nth-child(1)>.rf-simpleaccessorytileview-selectors >ul:nth-child(1)>li:nth-child(2)>label:nth-child(2)>.row >span:nth-child(1)>span:nth-child(1)",
+                    "netloc": "apple",
+                    "url": "https://www.apple.com/shop/buy-mac/pro-display-xdr"
+                }
+            },
+            {
+                "match_function_name": "element_path_exactly_match",
+                "method": "selector",
+                "content": {
+                    "reference_answer": ".rf-simpleaccessorytileviewslot.rf-simpleaccessorytileviewslot-enabled.row.as-l-container >.rf-simpleaccessorytileviewslot-section.column.large-6.large-offset-1.small-12.small-offset-0 >fieldset:nth-child(1)>.rf-simpleaccessorytileview-selectors >ul:nth-child(1)>li:nth-child(2)>label:nth-child(2)>.row >span:nth-child(1)>span:nth-child(1)",
+                    "netloc": "apple",
+                    "url": "https://www.apple.com/shop/buy-mac/pro-display-xdr"
+                }
+            },
+            {
+                "match_function_name": "element_path_exactly_match",
+                "method": "selector",
+                "content": {
+                    "reference_answer": ".button.button-block ",
+                    "netloc": "apple",
+                    "url": "https://www.apple.com/shop/buy-mac/pro-display-xdr/nano-glass"
+                }
+            }
+        ],
+        "reference_task_length": 9
+    },
+    {
+        "website": "apple",
         "task": "Check the status of your iPhone repair",
         "category": "Shopping.Digital",
         "index": "2OEKICou9EWm4Bs6N9Ei3",
