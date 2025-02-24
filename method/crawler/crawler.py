@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 import undetected_chromedriver as uc
 
@@ -56,10 +57,14 @@ class WebCrawler():
         desired_caps = DesiredCapabilities.CHROME.copy()
         desired_caps["goog:loggingPrefs"] = {"browser": "ALL"}
         
-        self.driver = uc.Chrome(option=chrome_options, headless=headless)
+        self.driver = uc.Chrome(option=chrome_options, headless=True)
         # service = Service(executable_path=ChromeDriverManager().install())
         
         self.driver.set_window_size(WINDOW_WIDTH, WINDOW_HEIGHT)
+        
+        # 启用网络请求监听
+        self.driver.execute_cdp_cmd('Network.enable', {})
+        
         self.task = task
         # self.website_category = "shopping" # We focus on e-commers websites for now
         self.website = website
@@ -90,7 +95,102 @@ class WebCrawler():
 
         if abstracted:
             self.task = self.generate_concrete_task()
-        
+            
+    # def capture_request(self, request):
+    #     """
+    #     捕获并记录网络请求信息
+    #     """
+    #     log_data = {
+    #         "url": request['request']['url'],
+    #         "method": request['request']['method'],
+    #         "headers": request['request']['headers'],
+    #         "postData": request.get('request', {}).get('postData', ''),
+    #         "timestamp": request['timestamp']
+    #     }
+    #     self.network_logs.append({"request": log_data})
+
+    # def capture_response(self, response):
+    #     """
+    #     捕获并记录网络响应信息
+    #     """
+    #     log_data = {
+    #         "status": response['response']['status'],
+    #         "url": response['response']['url'],
+    #         "headers": response['response']['headers'],
+    #         "responseBody": self.get_response_body(response['requestId']),
+    #         "timestamp": response['timestamp']
+    #     }
+    #     self.network_logs.append({"response": log_data})
+
+    # def get_response_body(self, request_id):
+    #     """
+    #     获取响应体内容
+    #     """
+    #     try:
+    #         response_body = self.driver.execute_cdp_cmd('Network.getResponseBody', {'requestId': request_id})
+    #         return response_body['body']  # 返回响应体
+    #     except Exception as e:
+    #         print(f"Error fetching response body: {e}")
+    #         return ""
+
+    # def write_network_logs(self):
+    #     """
+    #     将网络日志写入 JSON 文件
+    #     """
+    #     log_file_path = os.path.join(self.dir, "network_logs.json")
+
+    #     # 保存网络日志到文件
+    #     with open(log_file_path, "w") as f:
+    #         json.dump(self.network_logs, f, indent=4)
+
+    # def clear_network_logs(self):
+    #     """
+    #     清空网络日志
+    #     """
+    #     self.network_logs = []
+
+    # def get_network_logs(self):
+    #     """
+    #     获取当前捕获的所有网络日志
+    #     """
+    #     return self.network_logs
+
+    # # get the console logs from chrome
+    # def get_console_logs(self):
+    #     try:
+    #         # Each entry is a dict with keys like 'level', 'message', 'timestamp'
+    #         return self.driver.get_log("browser")
+    #     except:
+    #         # If something goes wrong, return an empty list
+    #         return []
+    
+    # # 获取所有的日志并保存（包括控制台日志和网络日志）
+    # def write_all_logs(self):
+    #     console_logs = self.get_console_logs()  # 获取控制台日志
+    #     log_file_path = os.path.join(self.dir, "logs.json")
+
+    #     # 如果日志文件存在，加载并追加新的日志
+    #     if os.path.exists(log_file_path):
+    #         with open(log_file_path, "r") as f:
+    #             try:
+    #                 existing_logs = json.load(f)
+    #             except:
+    #                 existing_logs = []
+    #     else:
+    #         existing_logs = []
+
+    #     # 合并控制台和网络日志
+    #     all_logs = {
+    #         "console_logs": console_logs,
+    #         "network_logs": network_logs
+    #     }
+
+    #     existing_logs.append(all_logs)
+
+    #     # 将日志写入文件
+    #     with open(log_file_path, "w") as f:
+    #         json.dump(existing_logs, f, indent=4)
+
     def init_dir(self):
 
         if os.path.exists(self.dir):
@@ -141,14 +241,14 @@ class WebCrawler():
                 create_multimodal_user_message(data, img)
             )
             
-            
+            print("try" + res)
         except Exception as e:
             img = self.take_screenshot()
             res = self.model_chain(
                 prompts.context_extraction_prompt,
                 create_multimodal_user_message(data, img)
             )
-
+            print("exp" + res)
         finally:
             res = json.loads(utils.clean_json(res))
             
@@ -558,7 +658,6 @@ class WebCrawler():
 
     def step(self):
 
-        print(self.driver.current_url)
         # this function is to get the actionbale elements in current HTML file 
         # at the same time do some pre-process like simplify the element(1.delete 'style' attributes  2.limit the length of html tags)
         self.current_actionables = self.find_actionables()
@@ -650,8 +749,6 @@ class WebCrawler():
             feedback = self.do_action(actionable, descriptions[index], action, text)
             tries += 1
 
-        
-        
         return 0
     
     def refine_img_actionables(self):
@@ -771,7 +868,7 @@ class WebCrawler():
                 self.driver.execute_script("arguments[0].click();", accept_button)
                 print("Cookies bar closed successfully.")
             except Exception as e:
-                print(e)
+                # print(e)
                 pass
             if self.step() == 1:
                 break

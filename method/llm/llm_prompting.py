@@ -171,15 +171,14 @@ def create_model_chain(model):
         if model.__class__.__name__ == "custom_chat_model":
             with get_openai_callback() as cb:
                 res = chain.invoke({})
+                print(res)
                 if verbose:
                     print("Response:")
                     print(res)
                     print(cb)
                     print("")
                 return res
-        
         return chain.invoke({})
-
     return invoke_model_chain
 
 

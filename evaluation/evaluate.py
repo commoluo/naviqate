@@ -15,7 +15,7 @@ import method.utils.logger as logging
 
 def eval():
     logger = logging.get_logger()
-    with open('../dataset/tasks_mind2web_live_test copy.json') as f:
+    with open('../dataset/test_tasks.json') as f:
         d = json.load(f)
         logger.info(f"NUMBER OF SAMPLES: {len(d)}")
         for i in range(len(d)): 
